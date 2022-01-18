@@ -29,6 +29,11 @@ void CLI_Init(UART_HandleTypeDef *huart)
 	HAL_UART_Receive_IT(CLI_huart, &char_to_CLI, 1);
 }
 
+/**
+ * @brief 串口发送完毕的回调函数
+ * 
+ * @param huart 串口句柄
+ */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	if (huart->Instance == CLI_huart->Instance)
