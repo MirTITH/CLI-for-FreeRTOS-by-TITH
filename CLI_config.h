@@ -2,7 +2,7 @@
  * @file CLI_config.h
  * @author TITH (1023515576@qq.com)
  * @brief CLI控制台配置文件
- * @version 1.4
+ * @version 1.5
  * @date 2022-01-14
  * 
  * @copyright Copyright (c) 2022

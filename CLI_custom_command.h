@@ -2,7 +2,7 @@
  * @file CLI_custom_command.h
  * @author TITH (1023515576@qq.com)
  * @brief 自定义命令的头文件，不需要在外部包含
- * @version 1.4
+ * @version 1.5
  * @date 2022-01-18
  * 
  * @copyright Copyright (c) 2022

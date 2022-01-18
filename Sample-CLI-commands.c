@@ -50,6 +50,7 @@
 	#define configINCLUDE_TRACE_RELATED_CLI_COMMANDS 0
 #endif
 
+#define configINCLUDE_QUERY_HEAP_COMMAND 1
 #ifndef configINCLUDE_QUERY_HEAP_COMMAND
 	#define configINCLUDE_QUERY_HEAP_COMMAND 0
 #endif
@@ -99,8 +100,8 @@ static BaseType_t prvParameterEchoCommand( char *pcWriteBuffer, size_t xWriteBuf
 a table that gives information on each task in the system. */
 static const CLI_Command_Definition_t xTaskStats =
 {
-	"task-stats", /* The command string to type. */
-	"task-stats: Displays a table showing the state of each FreeRTOS task\r\n\r\n",
+	"ps", /* The command string to type. */
+	"ps: Displays a table showing the state of each FreeRTOS task\r\n\r\n",
 	prvTaskStatsCommand, /* The function to run. */
 	0 /* No parameters are expected. */
 };
@@ -169,11 +170,9 @@ void vRegisterSampleCLICommands( void )
 	/* Register all the command line commands defined immediately above. */
 	FreeRTOS_CLIRegisterCommand( &xTaskStats );	
 	// FreeRTOS_CLIRegisterCommand( &xThreeParameterEcho );
-	// 防止出现warning
-	(void)xThreeParameterEcho;
+	(void)xThreeParameterEcho;// 防止出现warning
 	// FreeRTOS_CLIRegisterCommand( &xParameterEcho );
-	// 防止出现warning
-	(void)xParameterEcho;
+	(void)xParameterEcho;// 防止出现warning
 	
 
 	#if( configGENERATE_RUN_TIME_STATS == 1 )

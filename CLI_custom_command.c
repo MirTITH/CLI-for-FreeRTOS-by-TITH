@@ -2,7 +2,7 @@
  * @file CLI_custom_command.c
  * @author TITH (1023515576@qq.com)
  * @brief 在此处添加自定义命令，具体方法可以参考Sample-CLI-commands.c
- * @version 1.4
+ * @version 1.5
  * @date 2022-01-13
  * 
  * @copyright Copyright (c) 2022
@@ -65,7 +65,11 @@ BaseType_t F_kamimadoka(char *pcWriteBuffer, size_t xWriteBufferLen, const char 
 
 	osDelay(50);
 
-	if (i >= length) return pdFALSE; // 结束执行
+	if (i >= length)
+	{
+		i = 0;
+		return pdFALSE; // 结束执行
+	}
 
 	return pdPASS; // 循环执行
 }

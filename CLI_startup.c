@@ -2,7 +2,7 @@
  * @file CLI_startup.c
  * @author TITH (1023515576@qq.com)
  * @brief CLI控制台启动代码，若要添加自定义命令，请在CLI_custom_command.c中添加
- * @version 1.4
+ * @version 1.5
  * @date 2022-01-13
  * 
  * @copyright Copyright (c) 2022
@@ -37,3 +37,10 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 		HAL_UART_Receive_IT(CLI_huart, &char_to_CLI, 1);
 	}
 }
+
+#if( configGENERATE_RUN_TIME_STATS == 1 )
+unsigned long getRunTimeCounterValue(void)
+{
+	return xTaskGetTickCount(); //返回当前滴答数
+}
+#endif
