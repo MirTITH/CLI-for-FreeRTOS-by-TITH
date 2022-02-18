@@ -50,32 +50,33 @@
 /*-----------------------------------------------------------*/
 
 /* The queue used to hold received characters. */
-static QueueHandle_t xRxedChars;
+// static QueueHandle_t xRxedChars;
 
 /*
  * See the serial2.h header file.
  */
 xComPortHandle xSerialPortInitMinimal( unsigned long ulWantedBaud, unsigned portBASE_TYPE uxQueueLength )
 {
-	xComPortHandle xReturn;
+	return 0;
+	// xComPortHandle xReturn;
 
 	/* Create the queues used to hold Rx/Tx characters. */
-	xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
+	// xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
 	
 	/* If the queue/semaphore was created correctly then setup the serial port
 	hardware. */
-	if(xRxedChars != serINVALID_QUEUE)
-	{
-		// 串口请在CubeMX中配置
-	}
-	else
-	{
-		xReturn = ( xComPortHandle ) 0;
-	}
+	// if(xRxedChars != serINVALID_QUEUE)
+	// {
+	// 	// 串口请在CubeMX中配置
+	// }
+	// else
+	// {
+	// 	xReturn = ( xComPortHandle ) 0;
+	// }
 
 	/* This demo file only supports a single port but we have to return
 	something to comply with the standard demo header file. */
-	return xReturn;
+	// return xReturn;
 }
 /*-----------------------------------------------------------*/
 
@@ -86,7 +87,7 @@ signed portBASE_TYPE xSerialGetChar( xComPortHandle pxPort, signed char *pcRxedC
 
 	/* Get the next character from the buffer.  Return false if no characters
 	are available, or arrive before xBlockTime expires. */
-	if( xQueueReceive( xRxedChars, pcRxedChar, xBlockTime ) )
+	if (UartDevice_Read(cli_uart_device, pcRxedChar, xBlockTime))
 	{
 		return pdTRUE;
 	}
@@ -97,24 +98,16 @@ signed portBASE_TYPE xSerialGetChar( xComPortHandle pxPort, signed char *pcRxedC
 }
 /*-----------------------------------------------------------*/
 
-void vSerialPutString( xComPortHandle pxPort, const signed char * const pcString, unsigned short usStringLength )
+void vSerialPutString(xComPortHandle pxPort, const signed char *const pcString, unsigned short usStringLength)
 {
-	#ifdef CLI_config_use_DMA
-	while (HAL_UART_Transmit_DMA(CLI_huart,(uint8_t*)pcString,usStringLength) == HAL_BUSY);
-	#else
-	while (HAL_UART_Transmit_IT(CLI_huart,(uint8_t*)pcString,usStringLength) == HAL_BUSY);
-	#endif // CLI_config_use_DMA
-
-	while (CLI_huart->gState != HAL_UART_STATE_READY) osDelay(10);
+	UartDevice_WriteStr(cli_uart_device, (const char*)pcString, usStringLength, portMAX_DELAY);
+	UartDevice_Sync(cli_uart_device);
 }
 /*-----------------------------------------------------------*/
 
-signed portBASE_TYPE xSerialPutChar( xComPortHandle pxPort, signed char cOutChar, TickType_t xBlockTime )
+signed portBASE_TYPE xSerialPutChar(xComPortHandle pxPort, signed char cOutChar, TickType_t xBlockTime)
 {
-	(void) pxPort;
-	(void) xBlockTime;
-	while (HAL_UART_Transmit_IT(CLI_huart, (uint8_t*)&cOutChar, 1) == HAL_BUSY);
-	return pdPASS;
+	return UartDevice_WriteChar(cli_uart_device, cOutChar, portMAX_DELAY);
 }
 /*-----------------------------------------------------------*/
 
@@ -123,11 +116,3 @@ void vSerialClose( xComPortHandle xPort )
 	/* Not supported as not required by the demo application. */
 }
 /*-----------------------------------------------------------*/
-
-void CLI_Input_Char(uint8_t* rx_char)
-{
-	portBASE_TYPE xHigherPriorityTaskWoken = pdFALSE;
-	xQueueSendFromISR(xRxedChars, rx_char, &xHigherPriorityTaskWoken);
-}
-
-

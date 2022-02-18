@@ -29,8 +29,10 @@
 #define SERIAL_COMMS_H
 
 #include "main.h"
+#include "uart_device.h"
 
 extern UART_HandleTypeDef* CLI_huart;
+extern UART_DEVICE* cli_uart_device;
 
 typedef void * xComPortHandle;
 
@@ -109,7 +111,5 @@ signed portBASE_TYPE xSerialPutChar( xComPortHandle pxPort,
                                      TickType_t xBlockTime );
 portBASE_TYPE xSerialWaitForSemaphore( xComPortHandle xPort );
 void vSerialClose( xComPortHandle xPort );
-
-void CLI_Input_Char(uint8_t* rx_char);
 
 #endif /* ifndef SERIAL_COMMS_H */

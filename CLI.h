@@ -2,17 +2,15 @@
  * @file CLI.h
  * @author TITH (1023515576@qq.com)
  * @brief CLI控制台启动代码头文件，在外部只包含本文件即可
- * @version 1.5
+ * @version 2.0
  * @date 2022-01-13
  * @copyright Copyright (c) 2022
  * 
  * 使用方法：
- * 		在CubeMX中配置串口，并使能global中断
- * 		（可选）使用DMA发送数据：在CubeMX中打开串口DMA发送和中断，在 CLI_config.h 中打开宏定义 CLI_config_use_DMA （注意：DMA要在串口之前初始化）
- * 		打开 FreeRTOS 的 USE_TRACE_FACILITY 和 USE_STATS_FORMATTING_FUNCTIONS
- * 		（可选）启用 run-time-stats 命令：打开 FreeRTOS 的 GENERATE_RUN_TIME_STATS
- * 		使用 CLI_Init() 初始化 CLI 控制台
- * 		如果在代码其他地方有 HAL_UART_RxCpltCallback()，需参考 CLI_startup.c 作相应修改
+ * (1) 在CubeMX中配置串口，并使能global中断
+ * (2) 打开 FreeRTOS 的 USE_TRACE_FACILITY 和 USE_STATS_FORMATTING_FUNCTIONS
+ * (3) 在代码中调用 CLI_Init() 初始化 CLI 控制台
+ * 
  */
 
 #pragma once
@@ -22,6 +20,6 @@
 /**
  * @brief 初始化CLI控制台
  * 
- * @param huart 该串口需要已经初始化、使能global中断。如果定义 CLI_config_use_DMA ，则还需启用DMA发送
+ * @param huart 该串口需要已经初始化、使能global中断。
  */
 void CLI_Init(UART_HandleTypeDef* huart);
